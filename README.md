@@ -15,7 +15,7 @@ If you're using a package manager, look for its documentation on how to install 
 ## Configuration
 
 By default there are no tools configured. The configuration expects a table with filetype and an array of command + arguments.
-For each tool, the current buffer path is automatically passed as the last argument.
+For each tool, the buffer file path is passed as the last argument when the formatter is called.
 
 An example config:
 
