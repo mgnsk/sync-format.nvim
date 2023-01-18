@@ -1,6 +1,6 @@
 # sync-format.nvim
 
-Synchronous formatter runner for Neovim.
+Synchronous formatter runner for Neovim that runs after buffer write.
 
 ## Installation
 
