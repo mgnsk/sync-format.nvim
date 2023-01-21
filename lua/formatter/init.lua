@@ -1,12 +1,12 @@
+vim.api.nvim_create_user_command("AutoformatToggle", function()
+    vim.g.sync_format_autoformat_disabled = not vim.g.sync_format_autoformat_disabled
+end, {})
+
+vim.api.nvim_create_user_command("AutoformatToggleBuffer", function()
+    vim.b.sync_format_autoformat_disabled = not vim.b.sync_format_autoformat_disabled
+end, {})
+
 local M = {}
-
-M.autoformat_enabled = true
-
-function M.autoformat_toggle()
-    M.autoformat_enabled = not M.autoformat_enabled
-end
-
-vim.api.nvim_create_user_command("AutoformatToggle", M.autoformat_toggle, {})
 
 function M.setup(config)
     local auFormatter = vim.api.nvim_create_augroup("Formatter", {})
@@ -15,7 +15,7 @@ function M.setup(config)
         group = auFormatter,
         pattern = { "*" },
         callback = function()
-            if not M.autoformat_enabled then
+            if vim.b.sync_format_autoformat_disabled or vim.g.sync_format_autoformat_disabled then
                 return
             end
 

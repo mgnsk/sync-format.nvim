@@ -1,6 +1,6 @@
 # sync-format.nvim
 
-Synchronous formatter runner for Neovim that runs after buffer write.
+Synchronous formatter runner for Neovim using in-place formatters. No stdin support.
 
 ## Installation
 
@@ -14,8 +14,7 @@ If you're using a package manager, look for its documentation on how to install 
 
 ## Configuration
 
-By default there are no tools configured. The configuration expects a table with filetype and an array of command + arguments.
-For each tool, the buffer file path is passed as the last argument when the formatter is called.
+By default there are no tools configured.
 
 An example config:
 
@@ -39,3 +38,10 @@ require("formatter").setup({
     sql = { "pg_format", "-i", "--type-case", "0" },
 })
 ```
+
+## Commands
+
+The plugin provides a few commands:
+
+- `AutoformatToggle` - toggles autoformat globally.
+- `AutoformatToggleBuffer` - toggles autoformat for the current buffer.
