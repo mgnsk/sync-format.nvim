@@ -43,5 +43,10 @@ require("formatter").setup({
 
 The plugin provides a few commands:
 
-- `AutoformatToggle` - toggles autoformat globally.
-- `AutoformatToggleBuffer` - toggles autoformat for the current buffer.
+- `AutoformatToggle` - toggle autoformat globally
+- `AutoformatEnable` - enable autoformat globally
+- `AutoformatDisable` - disable autoformat globally
+- `AutoformatToggleBuffer` - toggle autoformat for buffer
+- `AutoformatEnableBuffer` - enable autoformat for buffer
+- `AutoformatDisableBuffer` - disable autoformat for buffer
+- `WriteFormatAll` - write and format all loaded file buffers
