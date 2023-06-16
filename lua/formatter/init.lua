@@ -9,32 +9,32 @@ end
 vim.api.nvim_create_user_command("AutoformatToggle", function()
 	vim.g.sync_format_autoformat_disabled = not vim.g.sync_format_autoformat_disabled
 	print_status(vim.g.sync_format_autoformat_disabled)
-end, { desc = "toggle autoformat globally" })
+end, { desc = "Toggle autoformat globally" })
 
 vim.api.nvim_create_user_command("AutoformatEnable", function()
 	vim.g.sync_format_autoformat_disabled = false
 	print_status(vim.g.sync_format_autoformat_disabled)
-end, { desc = "enable autoformat globally" })
+end, { desc = "Enable autoformat globally" })
 
 vim.api.nvim_create_user_command("AutoformatDisable", function()
 	vim.g.sync_format_autoformat_disabled = true
 	print_status(vim.g.sync_format_autoformat_disabled)
-end, { desc = "disable autoformat globally" })
+end, { desc = "Disable autoformat globally" })
 
 vim.api.nvim_create_user_command("AutoformatToggleBuffer", function()
 	vim.b.sync_format_autoformat_disabled = not vim.b.sync_format_autoformat_disabled
 	print_status(vim.b.sync_format_autoformat_disabled)
-end, { desc = "toggle autoformat for buffer" })
+end, { desc = "Toggle autoformat for buffer" })
 
 vim.api.nvim_create_user_command("AutoformatEnableBuffer", function()
 	vim.b.sync_format_autoformat_disabled = false
 	print_status(vim.b.sync_format_autoformat_disabled)
-end, { desc = "enable autoformat for buffer" })
+end, { desc = "Enable autoformat for buffer" })
 
 vim.api.nvim_create_user_command("AutoformatDisableBuffer", function()
 	vim.b.sync_format_autoformat_disabled = true
 	print_status(vim.b.sync_format_autoformat_disabled)
-end, { desc = "disable autoformat for buffer" })
+end, { desc = "Disable autoformat for buffer" })
 
 local M = {}
 
@@ -48,7 +48,7 @@ vim.api.nvim_create_user_command("WriteFormatAll", function()
 			end)
 		end
 	end
-end, { desc = "write and format all loaded file buffers" })
+end, { desc = "Write and format all loaded file buffers" })
 
 function M.do_format()
 	if vim.b.sync_format_autoformat_disabled or vim.g.sync_format_autoformat_disabled then
