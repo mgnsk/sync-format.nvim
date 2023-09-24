@@ -1,39 +1,47 @@
-local function print_status(disabled)
+local function print_status_global(disabled)
 	if disabled then
-		vim.notify("autoformat disabled", vim.log.levels.INFO, { title = "Formatter" })
+		vim.notify("autoformat disabled globally", vim.log.levels.INFO, { title = "Formatter" })
 	else
-		vim.notify("autoformat enabled", vim.log.levels.INFO, { title = "Formatter" })
+		vim.notify("autoformat enabled globally", vim.log.levels.INFO, { title = "Formatter" })
+	end
+end
+
+local function print_status_buffer(disabled)
+	if disabled then
+		vim.notify("autoformat disabled for buffer", vim.log.levels.INFO, { title = "Formatter" })
+	else
+		vim.notify("autoformat enabled for buffer", vim.log.levels.INFO, { title = "Formatter" })
 	end
 end
 
 vim.api.nvim_create_user_command("AutoformatToggle", function()
 	vim.g.sync_format_autoformat_disabled = not vim.g.sync_format_autoformat_disabled
-	print_status(vim.g.sync_format_autoformat_disabled)
+	print_status_global(vim.g.sync_format_autoformat_disabled)
 end, { desc = "Toggle autoformat globally" })
 
 vim.api.nvim_create_user_command("AutoformatEnable", function()
 	vim.g.sync_format_autoformat_disabled = false
-	print_status(vim.g.sync_format_autoformat_disabled)
+	print_status_global(vim.g.sync_format_autoformat_disabled)
 end, { desc = "Enable autoformat globally" })
 
 vim.api.nvim_create_user_command("AutoformatDisable", function()
 	vim.g.sync_format_autoformat_disabled = true
-	print_status(vim.g.sync_format_autoformat_disabled)
+	print_status_global(vim.g.sync_format_autoformat_disabled)
 end, { desc = "Disable autoformat globally" })
 
 vim.api.nvim_create_user_command("AutoformatToggleBuffer", function()
 	vim.b.sync_format_autoformat_disabled = not vim.b.sync_format_autoformat_disabled
-	print_status(vim.b.sync_format_autoformat_disabled)
+	print_status_buffer(vim.b.sync_format_autoformat_disabled)
 end, { desc = "Toggle autoformat for buffer" })
 
 vim.api.nvim_create_user_command("AutoformatEnableBuffer", function()
 	vim.b.sync_format_autoformat_disabled = false
-	print_status(vim.b.sync_format_autoformat_disabled)
+	print_status_buffer(vim.b.sync_format_autoformat_disabled)
 end, { desc = "Enable autoformat for buffer" })
 
 vim.api.nvim_create_user_command("AutoformatDisableBuffer", function()
 	vim.b.sync_format_autoformat_disabled = true
-	print_status(vim.b.sync_format_autoformat_disabled)
+	print_status_buffer(vim.b.sync_format_autoformat_disabled)
 end, { desc = "Disable autoformat for buffer" })
 
 local M = {}
@@ -63,7 +71,7 @@ function M.do_format()
 		local output = vim.fn.system(command)
 
 		if vim.v.shell_error ~= 0 then
-			vim.notify(output, vim.log.levels.ERROR, { title = "Formatter" })
+			vim.notify(output, vim.log.levels.ERROR, { title = "sync-format.nvim" })
 		end
 
 		vim.cmd([[silent! edit]])
@@ -71,7 +79,7 @@ function M.do_format()
 end
 
 function M.setup(config)
-	local auFormatter = vim.api.nvim_create_augroup("Formatter", {})
+	local auFormatter = vim.api.nvim_create_augroup("sync-format.nvim", {})
 	M.config = config
 
 	vim.api.nvim_create_autocmd({ "BufWritePost" }, {
