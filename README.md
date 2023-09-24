@@ -20,21 +20,16 @@ An example config:
 
 ```lua
 require("formatter").setup({
-    css = { "prettier", "-w" },
-    less = { "prettier", "-w" },
-    markdown = { "prettier", "-w" },
-    html = { "prettier", "-w" },
-    json = { "prettier", "-w" },
-    javascript = { "prettier", "-w" },
     typescript = { "prettier", "-w" },
     lua = { "stylua", "--indent-type", "Spaces", "--indent-width", "4" },
+    fish = { "fish", "-c", [['fish_indent -w $argv[1]']] },
     c = { "clang-format", "-i" },
-    glsl = { "clang-format", "-i" },
     proto = { "buf", "format", "-w" },
-    dockerfile = { "dockerfile_format" },
+    lua = { "stylua" },
     go = { "goimports", "-w" },
     rust = { "rustfmt" },
     sh = { "shfmt", "-w" },
+    php = { "pint" },
     sql = { "pg_format", "-i", "--type-case", "0" },
 })
 ```
