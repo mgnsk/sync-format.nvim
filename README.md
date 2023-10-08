@@ -44,4 +44,3 @@ The plugin provides a few commands:
 - `AutoformatToggleBuffer` - Toggle autoformat for buffer
 - `AutoformatEnableBuffer` - Enable autoformat for buffer
 - `AutoformatDisableBuffer` - Disable autoformat for buffer
-- `WriteFormatAll` - Write and format all loaded file buffers
