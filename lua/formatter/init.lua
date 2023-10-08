@@ -46,18 +46,6 @@ end, { desc = "Disable autoformat for buffer" })
 
 local M = {}
 
-vim.api.nvim_create_user_command("WriteFormatAll", function()
-	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-		if vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_get_name(buf) ~= "" then
-			vim.api.nvim_buf_call(buf, function()
-				if vim.bo.modifiable and not vim.bo.readonly then
-					vim.cmd.w()
-				end
-			end)
-		end
-	end
-end, { desc = "Write and format all loaded file buffers" })
-
 function M.do_format()
 	if vim.b.sync_format_autoformat_disabled or vim.g.sync_format_autoformat_disabled then
 		return
