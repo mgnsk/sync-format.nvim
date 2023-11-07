@@ -6,7 +6,8 @@ Synchronous formatter runner for Neovim using in-place formatters. No stdin supp
 
 - In-place formatting only, no stdin support.
 - Simple configuration.
-- Preserves scroll positions when editing the same buffer in multiple windows at different positions.
+- Can run multiple formatters in sequence.
+- Preserves scroll positions when editing the same buffer in multiple windows at different positions by using the `edit` command to reload the buffer.
 
 ## Installation
 
@@ -25,6 +26,10 @@ Example using lazy.nvim:
             proto = { "buf", "format", "-w" },
             lua = { "stylua" },
             go = { "goimports", "-w" },
+            go = {
+                { "goimports", "-w" },
+                { "gofumpt", "-w" },
+            },
             rust = { "rustfmt" },
             sh = { "shfmt", "-w" },
             php = { "pint" },

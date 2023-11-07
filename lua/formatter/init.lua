@@ -50,28 +50,52 @@ local function splitpath(p)
 	return string.match(p, "^(.-)[\\/]?([^\\/]*)$")
 end
 
+-- is_command return whether tbl contains of strings, i.e. is a single command
+local function is_single_command(tbl)
+	for _, v in ipairs(tbl) do
+		if type(v) ~= "string" then
+			return false
+		end
+	end
+
+	return true
+end
+
+local function run_formatter(cmd)
+	local filename = vim.fn.fnameescape(vim.fn.resolve(vim.api.nvim_buf_get_name(0)))
+	local dir, _ = splitpath(filename)
+	local command = string.format("cd %s; %s %s 2>&1", dir, cmd, filename)
+
+	local output = vim.fn.system(command)
+	if vim.v.shell_error ~= 0 then
+		vim.notify(output, vim.log.levels.ERROR, { title = "sync-format.nvim" })
+	end
+
+	vim.cmd([[silent! edit]])
+end
+
 function M.do_format()
 	if vim.b.sync_format_autoformat_disabled or vim.g.sync_format_autoformat_disabled then
 		return
 	end
 
-	local cmd = M.config[vim.bo.filetype]
-	if cmd ~= nil then
-		local filename = vim.fn.fnameescape(vim.fn.resolve(vim.api.nvim_buf_get_name(0)))
-		local dir, _ = splitpath(filename)
-		local command = string.format("cd %s; %s %s 2>&1", dir, table.concat(cmd, " "), filename)
-
-		local output = vim.fn.system(command)
-		if vim.v.shell_error ~= 0 then
-			vim.notify(output, vim.log.levels.ERROR, { title = "sync-format.nvim" })
+	local conf = M.config[vim.bo.filetype]
+	if conf ~= nil then
+		if is_single_command(conf) then
+			-- single command
+			run_formatter(table.concat(conf, " "))
+		else
+			-- multiple commands
+			for _, cmd in ipairs(conf) do
+				run_formatter(table.concat(cmd, " "))
+			end
 		end
-
-		vim.cmd([[silent! edit]])
 	end
 end
 
 function M.setup(config)
 	local auFormatter = vim.api.nvim_create_augroup("sync-format.nvim", {})
+	-- TODO: validate config
 	M.config = config
 
 	vim.api.nvim_create_autocmd({ "BufWritePost" }, {
