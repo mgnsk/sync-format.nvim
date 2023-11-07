@@ -46,6 +46,10 @@ end, { desc = "Disable autoformat for buffer" })
 
 local M = {}
 
+local function splitpath(p)
+	return string.match(p, "^(.-)[\\/]?([^\\/]*)$")
+end
+
 function M.do_format()
 	if vim.b.sync_format_autoformat_disabled or vim.g.sync_format_autoformat_disabled then
 		return
@@ -53,11 +57,11 @@ function M.do_format()
 
 	local cmd = M.config[vim.bo.filetype]
 	if cmd ~= nil then
-		local bufname = vim.fn.fnameescape(vim.api.nvim_buf_get_name(0))
-		local command = string.format("%s %s 2>&1", table.concat(cmd, " "), bufname)
+		local filename = vim.fn.fnameescape(vim.fn.resolve(vim.api.nvim_buf_get_name(0)))
+		local dir, _ = splitpath(filename)
+		local command = string.format("cd %s; %s %s 2>&1", dir, table.concat(cmd, " "), filename)
 
 		local output = vim.fn.system(command)
-
 		if vim.v.shell_error ~= 0 then
 			vim.notify(output, vim.log.levels.ERROR, { title = "sync-format.nvim" })
 		end
