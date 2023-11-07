@@ -25,7 +25,6 @@ Example using lazy.nvim:
             c = { "clang-format", "-i" },
             proto = { "buf", "format", "-w" },
             lua = { "stylua" },
-            go = { "goimports", "-w" },
             go = {
                 { "goimports", "-w" },
                 { "gofumpt", "-w" },
